@@ -1,0 +1,29 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true,
+    "**/.next": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/postcss.config.js": true,
+    "**/tsconfig.json": true,
+    "**/README.md": true,
+    "**/next-env.d.ts": true,
+    "**/.gitignore": true,
+    "**/public": true,
+    // "**/.vscode": true,
+    "**/tailwind.config.js": true,
+    "**next.config.js": true,
+    "**yarn-error.log": true,
+    "**theme.d.ts": true,
+    "**package.json": true,
+    //.env .env.local .yarn-error.log .theme.config.js
+    "**.env": true,
+    "**/.env.local": true
+  }
+}
