@@ -58,7 +58,7 @@ const Games = () => {
                 p={0.2}
                 md={4}
                 className="cursor-pointer"
-                onClick={() => router.push(`/games/${item._id}`)}
+                // onClick={() => router.push(`/games/${item._id}`)}
               >
                 <Card
                   sx={{
