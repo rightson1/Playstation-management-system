@@ -8,46 +8,57 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
-import { customToast, deleteFile } from "@/components/helpers/functions";
+import {
+  customToast,
+  deleteFile,
+  useDeleteNotification,
+} from "@/components/helpers/functions";
 import { useUpdateUser } from "@/utils/hooks/useUser";
 import { useAuth } from "@/utils/AuthContext";
-import { useUpdateSession } from "@/utils/hooks/useSession";
+import {
+  useGetSessionByCode,
+  useUpdateSession,
+} from "@/utils/hooks/useSession";
 import axios from "axios";
-
+import { Notification } from "@/types";
+import toast from "react-hot-toast";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "@/utils/firebase";
+import { useGetSpots } from "@/utils/hooks/useSpot";
 const Console = () => {
   const { colors } = useGlobalTheme();
   const { user, fetchUser } = useAuth();
   const { mutateAsync: updateUser } = useUpdateUser();
-  const [sessionCode, setSessionCode] = useState(user?.sessionCode || "");
+  const [message, setMessage] = useState("");
+  const { data: session } = useGetSessionByCode(user?.sessionCode);
   const { mutateAsync: updateSession } = useUpdateSession();
+  const { data: spots } = useGetSpots();
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let url = "";
-    const code = e.currentTarget.code.value;
-    const saveConsole = async () => {
-      const session = await axios
-        .get(`/api/sessions?code=${code}`)
-        .then((res) => res.data);
-      if (session) {
-        await axios.put(`/api/sessions/players`, {
-          _id: session._id,
-          player: user._id,
-        });
-        await updateUser({
-          _id: user._id,
-          sessionCode: code,
-        });
-        await fetchUser(user.uid);
-      } else {
-        throw new Error("Invalid code");
-      }
+    if (!session) return toast.error("Session not found");
+    const message = e.currentTarget.message.value;
+
+    const data: Notification = {
+      message,
+      createdAt: new Date().toISOString(),
+      sessionId: session._id,
+      id: "",
+      read: false,
+      senderId: user?._id,
+      senderName: user?.displayName,
+      spot:
+        spots?.find((item) => item._id === session.spot)?.name || session.spot,
+    };
+    setMessage("");
+    const update = async () => {
+      await addDoc(collection(db, "notifications"), data);
     };
     customToast({
-      userFunction: saveConsole,
-      successMessage: "Game added",
-      errorMessage: "Something went wrong",
+      userFunction: update,
+      successMessage: "Notification sent",
     });
   };
+
   return (
     <Box
       m={1}
@@ -62,18 +73,18 @@ const Console = () => {
       </div>
       <Box mt={2} className="flex flex-col gap-5">
         <FormControl fullWidth>
-          <FormLabel>Code</FormLabel>
+          <FormLabel>Message</FormLabel>
           <TextField
-            label="Code"
+            label="Message"
             variant="outlined"
             size="small"
             color="primary"
-            name="code"
+            name="message"
             required
             multiline
             rows={3}
-            value={sessionCode}
-            onChange={(e) => setSessionCode(e.target.value)}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
         </FormControl>
 

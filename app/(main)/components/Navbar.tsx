@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import Apps from "./Apps";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import { useAuth } from "@/utils/AuthContext";
+import { useNotifications } from "@/components/helpers/functions";
 
 export default function Navbar({ open, setOpen }: openProps) {
   const router = useRouter();
@@ -33,6 +34,8 @@ export default function Navbar({ open, setOpen }: openProps) {
   const [popOverEl, setPopOverEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const { notifications } = useNotifications();
+
   const { logout } = useAuth();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopOverEl(event.currentTarget);
@@ -126,7 +129,7 @@ export default function Navbar({ open, setOpen }: openProps) {
           aria-label="show 17 new notifications"
           color="inherit"
         >
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={notifications.length} color="error">
             <NotificationsIcon />
           </Badge>
         </IconButton>
@@ -213,7 +216,7 @@ export default function Navbar({ open, setOpen }: openProps) {
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>

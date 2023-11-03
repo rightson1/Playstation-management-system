@@ -11,14 +11,14 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
-import Image from "next/image";
 import React from "react";
 import { useGetSpots } from "@/utils/hooks/useSpot";
+import { useAuth } from "@/utils/AuthContext";
 
 const Rightbar = () => {
   const theme = useTheme();
   const { colors } = useGlobalTheme();
+  const { user } = useAuth();
   const screenWidth = useMediaQuery(theme.breakpoints.up("md"));
   const { data: spots } = useGetSpots();
 
@@ -41,56 +41,31 @@ const Rightbar = () => {
         },
       }}
     >
-      <div className="flex-col-center px-2">
-        <div className="w-full fb">
-          <Button variant="text">Notifications</Button>
-          <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="inherit"
-          >
-            <Badge badgeContent={17} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </div>
-
-        <Box className="w-full flex-col-center mt-5 gap-1">
-          {[1, 2, 3].map((_, i) => (
-            <Box
-              className="flex items-start gap-2  p-1 cursor-pointer"
-              border={1}
-              borderColor={colors.borderColor}
-              bgcolor={colors.foreground}
-              key={i}
-              sx={{
-                "&:hover": {
-                  bgcolor: `${colors.active} !important`,
-                },
-              }}
+      <div className="flex flex-col items-center py-3">
+        <div className={`p-[9px] ring-[.5px] ring-[#1FDF64] rounded-full`}>
+          <div className={`p-[6px] ring-[1px] ring-[#1FDF64] rounded-full`}>
+            <div
+              className={`p-1 ring-[2px] ring-[#1FDF64] rounded-full flex-center w-[55px] h-[55px]`}
             >
               <Avatar
-                src="/user.jpg"
-                alt="user"
                 sx={{
-                  width: 45,
-                  height: 45,
+                  height: "50px",
+                  width: "50px",
                 }}
+                className="shadow-md"
+                src="/user.jpg"
+                alt={user?.displayName}
               />
-              <Box className="flex flex-col gap-1 ">
-                <Typography variant="body2" className="font-500">
-                  Our Playsation Pad is not working
-                </Typography>
-                <div className="flex justify-between">
-                  <Typography variant="body2">1min ago</Typography>
-                  <Button>
-                    <CloseIcon fontSize="small" />
-                  </Button>
-                </div>
-              </Box>
-            </Box>
-          ))}
+            </div>
+          </div>
+          {/* names */}
+        </div>
+        <Typography variant="h5">{user?.displayName || "No name"}</Typography>
+      </div>
 
+      <div className="flex-col-center px-2">
+        <Box className="w-full flex-col-center mt-2 gap-1">
+          <Typography variant="h6">Available Spots</Typography>
           <Box
             py={2}
             px={1}
@@ -98,10 +73,8 @@ const Rightbar = () => {
             sx={{
               borderRadius: 1,
             }}
+            bgcolor={colors.secondary}
           >
-            <Typography variant="h5" pb={1}>
-              <Typography variant="body2">Available Gaming Spots</Typography>
-            </Typography>
             {spots
               ?.filter((spot) => spot.status === "Available")
               .map((spot, i) => (
@@ -122,7 +95,7 @@ const Rightbar = () => {
                     component="img"
                   />
                   <Typography variant="h5">{spot.name}</Typography>
-                  <Typography variant="body2">{spot.console.name}</Typography>
+                  <Typography variant="body2">{spot.description}</Typography>
                 </Box>
               ))}
           </Box>

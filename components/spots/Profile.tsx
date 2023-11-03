@@ -244,11 +244,6 @@ const Profile = ({
         </div>
         <Play />
       </Grid>
-
-      <Grid item xs={12} md={6} className="flex flex-col gap-2">
-        <Typography variant="h4">Notifications</Typography>
-        <NotificationCard />
-      </Grid>
     </Grid>
   );
 };

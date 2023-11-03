@@ -20,11 +20,15 @@ import Chip from "@mui/material/Chip";
 import ClearIcon from "@mui/icons-material/Clear";
 import Button from "@mui/material/Button";
 import { NotificationCard, border } from "@/components/helpers/atoms";
+import { useNotifications } from "@/components/helpers/functions";
 const Notifications = () => {
   const { colors } = useGlobalTheme();
+  const { notifications } = useNotifications();
   return (
     <Box m={1}>
-      <NotificationCard />
+      {notifications.map((notification, index) => {
+        return <NotificationCard key={index} notification={notification} />;
+      })}
     </Box>
   );
 };

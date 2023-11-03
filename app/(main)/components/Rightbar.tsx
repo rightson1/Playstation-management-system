@@ -15,12 +15,15 @@ import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
 import React from "react";
 import { useGetSpots } from "@/utils/hooks/useSpot";
+import { useNotifications } from "@/components/helpers/functions";
+import { format } from "timeago.js";
 
 const Rightbar = () => {
   const theme = useTheme();
   const { colors } = useGlobalTheme();
   const screenWidth = useMediaQuery(theme.breakpoints.up("md"));
   const { data: spots } = useGetSpots();
+  const { notifications } = useNotifications();
 
   const drawerWidth = "240px";
   return (
@@ -49,14 +52,14 @@ const Rightbar = () => {
             aria-label="show 17 new notifications"
             color="inherit"
           >
-            <Badge badgeContent={17} color="error">
+            <Badge badgeContent={notifications.length} color="error">
               <NotificationsIcon />
             </Badge>
           </IconButton>
         </div>
 
         <Box className="w-full flex-col-center mt-5 gap-1">
-          {[1, 2, 3].map((_, i) => (
+          {notifications.map((item, i) => (
             <Box
               className="flex items-start gap-2  p-1 cursor-pointer"
               border={1}
@@ -78,14 +81,13 @@ const Rightbar = () => {
                 }}
               />
               <Box className="flex flex-col gap-1 ">
-                <Typography variant="body2" className="font-500">
-                  Our Playsation Pad is not working
+                <Typography variant="body1" className="font-500">
+                  {item.message}
                 </Typography>
                 <div className="flex justify-between">
-                  <Typography variant="body2">1min ago</Typography>
-                  <Button>
-                    <CloseIcon fontSize="small" />
-                  </Button>
+                  <Typography variant="body2" className="text-[10px]">
+                    {format(item.createdAt)}
+                  </Typography>
                 </div>
               </Box>
             </Box>
@@ -122,7 +124,7 @@ const Rightbar = () => {
                     component="img"
                   />
                   <Typography variant="h5">{spot.name}</Typography>
-                  <Typography variant="body2">{spot.console.name}</Typography>
+                  <Typography variant="body2">{spot.description}</Typography>
                 </Box>
               ))}
           </Box>

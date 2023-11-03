@@ -128,3 +128,13 @@ export interface SessionFetched extends Session, Fetched {}
 export interface SessionPopulated extends Omit<Session, "players"> {
   players: UserFetched[];
 }
+export interface Notification {
+  id: string;
+  senderId: string;
+  senderName: string;
+  spot: string;
+  message: string;
+  createdAt: string;
+  sessionId: string;
+  read: boolean;
+}
