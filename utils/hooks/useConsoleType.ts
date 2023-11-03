@@ -5,8 +5,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const useAddConsoleType = () => {
-  return useMutation((event: ConsoleType) =>
-    axios.post(`/api/console-type`, event)
+  const queryClient = useQueryClient();
+  return useMutation(
+    (event: ConsoleType) => axios.post(`/api/console-type`, event),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["consoleTypes"]);
+      },
+    }
   );
 };
 export const useGetConsoleTypes = () => {
@@ -37,7 +43,6 @@ export const useUpdateConsoleType = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["consoleTypes"]);
-        toast.success("ConsoleType updated");
       },
     }
   );

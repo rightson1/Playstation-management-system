@@ -6,11 +6,24 @@ import { useTheme } from "@mui/material/styles";
 import { Box, useMediaQuery } from "@mui/material";
 import UserNav from "../(main)/components/User/UserNav";
 import UserSide from "../(main)/components/User/UserSide";
-
+import UserRight from "../(main)/components/UserRight";
+import { useAuth } from "@/utils/AuthContext";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 const Layout = ({ children }: childrenProps) => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const screenWidth = useMediaQuery(theme.breakpoints.up("md"));
+  const { admin, user } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!admin) {
+      localStorage.setItem("path", pathname);
+      router.push("/login");
+    }
+  }, [admin, user]);
   return (
     <Box>
       <UserSide {...{ open, setOpen }} />
@@ -24,7 +37,7 @@ const Layout = ({ children }: childrenProps) => {
       >
         {children}
       </Box>
-      <Rightbar />
+      <UserRight />
     </Box>
   );
 };

@@ -16,7 +16,6 @@ const Game = () => {
   const { data: fetchedGame, isLoading } = useGetSingleGame(id);
   const router = useRouter();
   if (isLoading || !fetchedGame) return <p>loading...</p>;
-  console.log(fetchedGame);
   return (
     <Box m={2} bgcolor={colors.foreground} className="flex">
       <Box

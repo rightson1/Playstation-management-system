@@ -49,6 +49,7 @@ const Login = () => {
               email,
               uid,
               photoURL: photoURL || "",
+              admin: false,
             });
           } else {
             throw new Error("Could not sign in");

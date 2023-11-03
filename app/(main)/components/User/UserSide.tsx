@@ -18,6 +18,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import { useGlobalTheme } from "@/utils/themeContext";
 import { useRouter } from "next/navigation";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import QrCodeIcon from "@mui/icons-material/QrCode";
 const drawerWidth = "220px";
 
 export default function UserSide({ open, setOpen }: openProps) {
@@ -41,7 +42,7 @@ export default function UserSide({ open, setOpen }: openProps) {
         {
           name: "Gamming Spots",
           icon: <MyLocationIcon />,
-          link: "/locations",
+          link: "/spots",
         },
         {
           name: "Games",
@@ -52,6 +53,16 @@ export default function UserSide({ open, setOpen }: openProps) {
           name: "Consoles",
           icon: <VideogameAssetIcon />,
           link: "/consoles",
+        },
+        {
+          name: "Session Code",
+          icon: <QrCodeIcon />,
+          link: "/session-code",
+        },
+        {
+          name: "Notifications",
+          icon: <NotificationsIcon />,
+          link: "/notification",
         },
       ],
     },
@@ -100,7 +111,7 @@ export default function UserSide({ open, setOpen }: openProps) {
           <List disablePadding>
             {item.links.map((text, index) => (
               <Box
-                onClick={() => router.push(text.link)}
+                onClick={() => router.push(`/user/${text.link}`)}
                 // className="w-full fb px-4 py-1 cursor-pointer transition-all duration-300 ease-in-out"
                 sx={{
                   "&:hover": {

@@ -38,3 +38,16 @@ export async function PUT(request: NextRequest) {
     return new NextResponse(JSON.stringify(err), { status: 500 });
   }
 }
+//get User by uid;
+
+export async function GET(request: NextRequest) {
+  try {
+    await db();
+    const id = request.nextUrl.searchParams.get("uid") as string;
+    const user = await User.findOne({ uid: id });
+    return NextResponse.json(user);
+  } catch (err) {
+    console.log(err);
+    return new NextResponse(JSON.stringify(err), { status: 500 });
+  }
+}

@@ -9,8 +9,10 @@ import { auth } from "@/utils/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import toast from "react-hot-toast";
 import { customToast } from "@/components/helpers/functions";
+import { useAddUser } from "@/utils/hooks/useUser";
 const Login = () => {
   const { colors } = useGlobalTheme();
+  const { mutateAsync } = useAddUser();
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -18,7 +20,22 @@ const Login = () => {
     const password = data.get("password")?.toString().trim();
     if (!email || !password) return;
     const signIn = async () => {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        async (res) => {
+          const { displayName, uid, email } = res.user;
+          if (email && uid) {
+            await mutateAsync({
+              displayName: displayName || "Admin",
+              email,
+              uid,
+              admin: true,
+              photoURL: "",
+            });
+          } else {
+            throw new Error("Could not sign in");
+          }
+        }
+      );
     };
     customToast({
       userFunction: signIn,

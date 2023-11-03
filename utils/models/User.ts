@@ -9,9 +9,12 @@ const UserSchema = new Schema(
 
     photoURL: {
       type: String,
-      required: true,
+      required: false,
     },
-
+    sessionCode: {
+      type: String,
+      required: false,
+    },
     email: {
       type: String,
       required: true,
@@ -19,6 +22,10 @@ const UserSchema = new Schema(
     uid: {
       type: String,
       required: true,
+    },
+    admin: {
+      type: Boolean,
+      default: false,
     },
   },
   {

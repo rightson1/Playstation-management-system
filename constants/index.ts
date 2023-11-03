@@ -1,27 +1,19 @@
 export const quickLinks = [
   {
-    title: "Home",
-    link: "/",
+    title: "Console",
+    link: "/create/console",
   },
   {
-    title: "About",
-    link: "/about",
+    title: "Console Type",
+    link: "/create/console-type",
   },
   {
-    title: "Contact",
-    link: "/contact",
+    title: "Game",
+    link: "/create/game",
   },
   {
-    title: "Contact",
-    link: "/contact",
-  },
-  {
-    title: "Contact",
-    link: "/contact",
-  },
-  {
-    title: "Contact",
-    link: "/contact",
+    title: "Gamming Spot",
+    link: "/create/spot",
   },
 ];
 export const events = [

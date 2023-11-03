@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/utils/themeContext";
 import "react-big-calendar/lib/sass/styles.scss";
+import { AuthProvider } from "@/utils/AuthContext";
 const plus_jakarta_sans = Plus_Jakarta_Sans({
   weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin-ext", "vietnamese", "latin"],
@@ -31,18 +32,20 @@ export default function RootLayout({
         id="__next"
         className={` ${plus_jakarta_sans.variable} font-jakarta text-white `}
       >
-        <QueryClientProvider client={queryClient}>
-          <Toaster />
-          <ProgressBar
-            height="6px"
-            color="000"
-            options={{ showSpinner: false }}
-            shallowRouting
-            appDirectory
-          />
-          <ThemeProvider>{children}</ThemeProvider>
-          <ReactQueryDevtools />
-        </QueryClientProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <Toaster />
+            <ProgressBar
+              height="6px"
+              color="000"
+              options={{ showSpinner: false }}
+              shallowRouting
+              appDirectory
+            />
+            <ThemeProvider>{children}</ThemeProvider>
+            <ReactQueryDevtools />
+          </QueryClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );

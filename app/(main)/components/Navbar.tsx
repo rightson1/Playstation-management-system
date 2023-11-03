@@ -21,10 +21,10 @@ import Button from "@mui/material/Button";
 import Popover from "@mui/material/Popover";
 import PageSearch from "./PageSearch";
 import { openProps } from "@/types";
-import { quickLinks } from "@/constants";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Apps from "./Apps";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function Navbar({ open, setOpen }: openProps) {
   const router = useRouter();
@@ -33,6 +33,7 @@ export default function Navbar({ open, setOpen }: openProps) {
   const [popOverEl, setPopOverEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const { logout } = useAuth();
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopOverEl(event.currentTarget);
   };
@@ -83,22 +84,6 @@ export default function Navbar({ open, setOpen }: openProps) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem
-        onClick={() => {
-          router.push("/profile");
-          handleMenuClose();
-        }}
-      >
-        Profile
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          router.push("/profile");
-          handleMenuClose();
-        }}
-      >
-        My account
-      </MenuItem>
       <MenuItem
         onClick={() => {
           router.push("/login");
@@ -183,11 +168,32 @@ export default function Navbar({ open, setOpen }: openProps) {
           <IconButton
             size="large"
             edge="start"
+            sx={{
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+            }}
             color="inherit"
             aria-label="open drawer"
             onClick={() => setOpen(!open)}
           >
             <MenuIcon />
+          </IconButton>
+          <IconButton
+            size="large"
+            sx={{
+              display: {
+                xs: "none",
+                md: "flex",
+              },
+            }}
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={() => router.back()}
+          >
+            <KeyboardBackspaceIcon />
           </IconButton>
           <IconButton color="inherit" onClick={() => setIsSearchOpen(true)}>
             <SearchIcon />
@@ -202,15 +208,6 @@ export default function Navbar({ open, setOpen }: openProps) {
           </Button>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"

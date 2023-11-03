@@ -5,45 +5,43 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { quickLinks } from "@/constants";
 import PeopleIcon from "@mui/icons-material/People";
-import BookIcon from "@mui/icons-material/Book";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import CampaignIcon from "@mui/icons-material/Campaign";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import CelebrationIcon from "@mui/icons-material/Celebration";
-import EditCalendarIcon from "@mui/icons-material/EditCalendar";
+import HomeIcon from "@mui/icons-material/Home";
 import Avatar from "@mui/material/Avatar";
 import { useGlobalTheme } from "@/utils/themeContext";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useRouter } from "next/navigation";
 const Apps = () => {
   const { colors } = useGlobalTheme();
+  const router = useRouter();
   const apps = [
     {
-      name: "Communities",
-      icon: <PeopleIcon />,
-      info: "3 communities",
+      name: "Home",
+      icon: <HomeIcon />,
+      link: "/",
     },
     {
-      name: "Events",
-      icon: <CelebrationIcon />,
-      info: "3 new",
+      name: "Gamming Spots",
+      icon: <MyLocationIcon />,
+      link: "/locations",
     },
     {
-      name: "Blogs",
-      icon: <BookIcon />,
-      info: "3 new ",
+      name: "Games",
+      icon: <SportsEsportsIcon />,
+      link: "/games",
     },
     {
-      name: "Chat",
-      icon: <ChatBubbleOutlineIcon />,
-      info: "3 new",
+      name: "Consoles",
+      icon: <VideogameAssetIcon />,
+      link: "/consoles",
     },
     {
-      name: "Announcements",
-      icon: <CampaignIcon />,
-      info: "3 new ",
-    },
-    {
-      name: "Calender",
-      icon: <EditCalendarIcon />,
-      info: "add event",
+      name: "Notifications",
+      icon: <NotificationsIcon />,
+      link: "/notifications",
     },
   ];
   return (
@@ -60,14 +58,20 @@ const Apps = () => {
               borderBottom={1}
               borderColor={colors.surface}
             >
-              <Avatar>{app.icon}</Avatar>
+              <Avatar
+                sx={{
+                  bgcolor: colors.lightBlue,
+                }}
+              >
+                {app.icon}
+              </Avatar>
               <div className="flex-col-start w-full">
                 <Typography variant="h6" className="w-full">
                   {app.name}
                 </Typography>
                 <div className="fb w-full">
                   <Typography variant="body2" color={colors.green[600]}>
-                    {app.info}
+                    {app.link}
                   </Typography>
                 </div>
               </div>
@@ -77,18 +81,21 @@ const Apps = () => {
       </Grid>
       <Grid item xs={4} md={4}>
         <Typography variant="h5" py={2}>
-          Quick Links
+          Forms
         </Typography>
         <Grid container spacing={1}>
           {quickLinks.map((link, index) => (
-            <Grid key={index} item xs={12} md={6}>
-              <Link href={link.link}>
-                {/* <IconButton> */}
-                <Typography variant="h6" color={colors.text}>
-                  {link.title}
-                </Typography>
-                {/* </IconButton> */}
-              </Link>
+            <Grid
+              key={index}
+              item
+              xs={12}
+              md={6}
+              onClick={() => router.push(link.link)}
+              className="cursor-pointer"
+            >
+              <Typography variant="body2" color={colors.green[600]}>
+                {link.title}
+              </Typography>
             </Grid>
           ))}
         </Grid>

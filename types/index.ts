@@ -52,6 +52,7 @@ export interface Console {
   games?: string[];
   description?: string;
 }
+export interface ConsoleFetchedUnpopulated extends Console, Fetched {}
 export interface ConsoleFetched extends Omit<Console, "type">, Fetched {
   _id: string;
   createdAt: string;
@@ -84,6 +85,14 @@ export interface User {
   photoURL?: string;
   email: string;
   uid: string;
+  admin: boolean;
+  sessionCode?: string;
+}
+export interface UserFetched extends User, Fetched {}
+export interface Admin {
+  email: string;
+  uid: string;
+  displayName: string;
 }
 export interface UserFetched extends User, Fetched {}
 
@@ -101,5 +110,21 @@ export interface Spot {
 }
 export interface SpotFetched extends Spot, Fetched {}
 export interface SpotPopulated extends Omit<Spot, "console">, Fetched {
-  console: ConsoleFetched;
+  console: ConsoleFetchedUnpopulated;
+  game: GameFetched;
+}
+export interface Session {
+  status: "current" | "completed" | "cancelled";
+  players: string[];
+  startTime: Date;
+  endTime?: Date;
+  amount: number;
+  discount: number;
+  console: string;
+  spot: string;
+  code: string;
+}
+export interface SessionFetched extends Session, Fetched {}
+export interface SessionPopulated extends Omit<Session, "players"> {
+  players: UserFetched[];
 }

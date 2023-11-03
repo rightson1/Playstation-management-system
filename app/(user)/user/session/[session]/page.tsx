@@ -16,7 +16,7 @@ const Page = () => {
   const { colors } = useGlobalTheme();
   const [value, setValue] = React.useState(0);
   const params = useParams();
-  const id = params.location;
+  const id = params.session;
   const { data: fetchedSpot, isLoading } = useGetSingleSpot(id);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -43,7 +43,7 @@ const Page = () => {
     const spotTabs = [
       {
         name: "Profile",
-        component: <Profile spot={fetchedSpot} player={false} />,
+        component: <Profile spot={fetchedSpot} player={true} />,
         value: 0,
       },
       {

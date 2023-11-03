@@ -17,7 +17,9 @@ import CelebrationIcon from "@mui/icons-material/Celebration";
 import HomeIcon from "@mui/icons-material/Home";
 import { useGlobalTheme } from "@/utils/themeContext";
 import { useRouter } from "next/navigation";
+import CasinoIcon from "@mui/icons-material/Casino";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
 const drawerWidth = "220px";
 
 export default function Sidebar({ open, setOpen }: openProps) {
@@ -54,6 +56,11 @@ export default function Sidebar({ open, setOpen }: openProps) {
           link: "/consoles",
         },
         {
+          name: "Console Type",
+          icon: <CasinoIcon />,
+          link: "/console-types",
+        },
+        {
           name: "Notifications",
           icon: <NotificationsIcon />,
           link: "/notifications",
@@ -64,16 +71,10 @@ export default function Sidebar({ open, setOpen }: openProps) {
       name: "Earnings",
       links: [
         {
-          name: "Games",
-          icon: <SportsEsportsIcon />,
-          info: "3",
-          link: "/communities",
-        },
-        {
           name: "Consoles",
           icon: <VideogameAssetIcon />,
           info: "3",
-          link: "/events",
+          link: "/earnings/consoles",
         },
       ],
     },

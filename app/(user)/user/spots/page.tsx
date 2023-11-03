@@ -7,29 +7,28 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import { useGlobalTheme } from "@/utils/themeContext";
 import { useRouter } from "next/navigation";
-import { useGetGames } from "@/utils/hooks/useGame";
+import { useGetSpots } from "@/utils/hooks/useSpot";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
 import { useGetConsoles } from "@/utils/hooks/useConsole";
-import Chip from "@mui/material/Chip";
 import { border } from "@/components/helpers/atoms";
-const Games = () => {
+import CardActions from "@mui/material/CardActions";
+import Chip from "@mui/material/Chip";
+const Spots = () => {
   const { colors } = useGlobalTheme();
   const router = useRouter();
-  const { data: games, isLoading } = useGetGames();
+  const { data: spots, isLoading } = useGetSpots();
   const { data: consoles } = useGetConsoles();
-  const [filteredGames, setFilteredGames] = useState(games || []);
+  const [filteredSpots, setFilteredSpots] = useState(spots || []);
 
   useEffect(() => {
-    setFilteredGames(games || []);
-  }, [games]);
+    setFilteredSpots(spots || []);
+  }, [spots]);
   return (
     <Box m={2}>
       <div className="flex justify-between items-center gap-2">
-        <Typography variant="h4">Games</Typography>
+        <Typography variant="h4">Spots</Typography>
         <TextField
           id="spots"
           label="Search..."
@@ -37,11 +36,11 @@ const Games = () => {
           variant="outlined"
           className="w-[150px] "
           onChange={(e) => {
-            if (!games) return;
-            const filtered = games.filter((item) =>
+            if (!spots) return;
+            const filtered = spots.filter((item) =>
               item.name.toLowerCase().includes(e.target.value.toLowerCase())
             );
-            setFilteredGames(filtered);
+            setFilteredSpots(filtered);
           }}
         />
       </div>
@@ -49,8 +48,8 @@ const Games = () => {
         {isLoading ? (
           <p>loading.....</p>
         ) : (
-          games &&
-          filteredGames.map((item, index) => {
+          spots &&
+          filteredSpots.map((item, index) => {
             return (
               <Grid
                 item
@@ -58,7 +57,7 @@ const Games = () => {
                 p={0.2}
                 md={4}
                 className="cursor-pointer"
-                // onClick={() => router.push(`/games/${item._id}`)}
+                // onClick={() => router.push(`/locations/${item._id}`)}
               >
                 <Card
                   sx={{
@@ -80,14 +79,7 @@ const Games = () => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Chip
-                      color="secondary"
-                      label={
-                        consoles?.find(
-                          (console) => console._id === item.console
-                        )?.name || "No console"
-                      }
-                    />
+                    <Chip color="secondary" label={item.status} />
                   </CardActions>
                 </Card>
               </Grid>
@@ -99,4 +91,4 @@ const Games = () => {
   );
 };
 
-export default Games;
+export default Spots;

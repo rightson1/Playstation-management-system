@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import db from "@/utils/db";
-import Game from "@/utils/models/Game";
-import ConsoleType from "@/utils/models/ConsoleType";
-import { GameFetched } from "@/types";
+import Session from "@/utils/models/Session";
+import { Types } from "mongoose";
+import { SessionFetched } from "@/types";
+import User from "@/utils/models/User";
 export async function POST(request: NextRequest) {
   await db();
   try {
     const body = await request.json();
-    const model = await Game.create(body);
+    const model = await Session.create(body);
     return new NextResponse(JSON.stringify(model), {
       status: 201,
       headers: {
@@ -22,27 +23,37 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   await db();
   try {
-    ConsoleType;
-    const games = await Game.find({}).populate("consoleType");
-    return NextResponse.json(games);
+    const id = request.nextUrl.searchParams.get("id") as string;
+    const code = request.nextUrl.searchParams.get("code") as string;
+    User;
+    const session = id
+      ? await Session.findOne({
+          spot: new Types.ObjectId(id),
+          status: "current",
+        }).populate("players")
+      : await Session.findOne({
+          code: code,
+          status: "current",
+        });
+    return NextResponse.json(session);
   } catch (err) {
     console.log(err);
     return new NextResponse(JSON.stringify(err), { status: 500 });
   }
 }
-//edit game
+//edit session
 export async function PUT(request: NextRequest) {
   await db();
   try {
-    const body: Partial<GameFetched> = await request.json();
-    const updatedGame = await Game.findOneAndUpdate(
+    const body: Partial<SessionFetched> = await request.json();
+    const updatedSession = await Session.findOneAndUpdate(
       {
         _id: body._id,
       },
       body,
       { new: true }
     );
-    return new NextResponse(JSON.stringify(updatedGame), {
+    return new NextResponse(JSON.stringify(updatedSession), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
